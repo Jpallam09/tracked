@@ -2,11 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { authClient } from "@/lib/client-auth"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,7 +19,14 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { UnfoldMoreIcon, SparklesIcon, CheckmarkBadgeIcon, CreditCardIcon, NotificationIcon, LogoutIcon } from "@hugeicons/core-free-icons"
+import {
+  UnfoldMoreIcon,
+  SparklesIcon,
+  CheckmarkBadgeIcon,
+  CreditCardIcon,
+  NotificationIcon,
+  LogoutIcon,
+} from "@hugeicons/core-free-icons"
 
 export function NavUser() {
   const router = useRouter()
@@ -59,7 +62,11 @@ export function NavUser() {
               <span className="truncate font-medium">{name}</span>
               <span className="truncate text-xs">{email}</span>
             </div>
-            <HugeiconsIcon icon={UnfoldMoreIcon} strokeWidth={2} className="ml-auto size-4" />
+            <HugeiconsIcon
+              icon={UnfoldMoreIcon}
+              strokeWidth={2}
+              className="ml-auto size-4"
+            />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="min-w-56 rounded-lg"
@@ -72,7 +79,9 @@ export function NavUser() {
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="size-8 rounded-lg">
                     <AvatarImage src={user?.image ?? ""} alt={name} />
-                    <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
+                    <AvatarFallback className="rounded-lg">
+                      {initials}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">{name}</span>
@@ -105,7 +114,7 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onSelect={handleLogout}>
+              <DropdownMenuItem onClick={handleLogout}>
                 <HugeiconsIcon icon={LogoutIcon} strokeWidth={2} />
                 Log out
               </DropdownMenuItem>
