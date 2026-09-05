@@ -5,10 +5,13 @@ import { SignupForm } from "@/components/signup-form"
 
 const push = vi.fn()
 const signUpEmail = vi.fn()
+const sendVerificationEmail = vi.fn()
 
 vi.mock("@/lib/client-auth", () => ({
   authClient: {
     signUp: { email: (...args: unknown[]) => signUpEmail(...args) },
+    sendVerificationEmail: (...args: unknown[]) =>
+      sendVerificationEmail(...args),
   },
 }))
 
@@ -29,6 +32,7 @@ describe("SignupForm", () => {
   beforeEach(() => {
     push.mockReset()
     signUpEmail.mockReset()
+    sendVerificationEmail.mockReset()
   })
 
   it("renders all form fields", () => {
@@ -59,7 +63,7 @@ describe("SignupForm", () => {
     expect(push).not.toHaveBeenCalled()
   })
 
-  it("submits signUp.email with the right payload and navigates to dashboard", async () => {
+  it("submits signUp.email and shows the check-your-email state", async () => {
     signUpEmail.mockResolvedValue({ data: { user: {} }, error: null })
     const user = userEvent.setup()
     render(<SignupForm />)
@@ -71,8 +75,30 @@ describe("SignupForm", () => {
       password: "password123",
       name: "Grace",
       lastName: "Hopper",
+      callbackURL: "/dashboard",
     })
-    expect(push).toHaveBeenCalledWith("/dashboard")
+    expect(
+      screen.getByRole("heading", { name: /check your email/i })
+    ).toBeInTheDocument()
+    expect(push).not.toHaveBeenCalled()
+  })
+
+  it("resends the verification email from the check-your-email state", async () => {
+    signUpEmail.mockResolvedValue({ data: { user: {} }, error: null })
+    sendVerificationEmail.mockResolvedValue({ data: null, error: null })
+    const user = userEvent.setup()
+    render(<SignupForm />)
+
+    await fillForm(user)
+
+    await user.click(
+      screen.getByRole("button", { name: /resend verification email/i })
+    )
+
+    expect(sendVerificationEmail).toHaveBeenCalledWith({
+      email: "grace@example.com",
+      callbackURL: "/dashboard",
+    })
   })
 
   it("displays the error message when signup fails and does not navigate", async () => {
