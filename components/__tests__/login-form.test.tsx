@@ -5,10 +5,14 @@ import { LoginForm } from "@/components/login-form"
 
 const push = vi.fn()
 const signInEmail = vi.fn()
+const signInSocial = vi.fn()
 
 vi.mock("@/lib/client-auth", () => ({
   authClient: {
-    signIn: { email: (...args: unknown[]) => signInEmail(...args) },
+    signIn: {
+      email: (...args: unknown[]) => signInEmail(...args),
+      social: (...args: unknown[]) => signInSocial(...args),
+    },
   },
 }))
 
@@ -26,6 +30,7 @@ describe("LoginForm", () => {
   beforeEach(() => {
     push.mockReset()
     signInEmail.mockReset()
+    signInSocial.mockReset()
   })
 
   it("renders the login fields", () => {
@@ -47,6 +52,20 @@ describe("LoginForm", () => {
       password: "password123",
     })
     expect(push).toHaveBeenCalledWith("/dashboard")
+  })
+
+  it("signs in with Google via the social button", async () => {
+    const user = userEvent.setup()
+    render(<LoginForm />)
+
+    await user.click(
+      screen.getByRole("button", { name: /continue with google/i })
+    )
+
+    expect(signInSocial).toHaveBeenCalledWith({
+      provider: "google",
+      callbackURL: "/dashboard",
+    })
   })
 
   it("shows an error message and does not navigate on failure", async () => {

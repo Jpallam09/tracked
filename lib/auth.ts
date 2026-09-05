@@ -15,6 +15,25 @@ export const authOptions = {
     schema,
   }),
   plugins: [nextCookies()],
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ["google"],
+    },
+  },
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      mapProfileToUser: (profile) => {
+        const [first = "", ...rest] = profile.name.trim().split(" ")
+        return {
+          name: first || profile.given_name,
+          lastName: rest.join(" ") || profile.family_name,
+        }
+      },
+    },
+  },
 } satisfies Parameters<typeof betterAuth>[0]
 
 export const auth = betterAuth(authOptions)

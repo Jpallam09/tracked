@@ -5,11 +5,15 @@ import { SignupForm } from "@/components/signup-form"
 
 const push = vi.fn()
 const signUpEmail = vi.fn()
+const signInSocial = vi.fn()
 const sendVerificationEmail = vi.fn()
 
 vi.mock("@/lib/client-auth", () => ({
   authClient: {
     signUp: { email: (...args: unknown[]) => signUpEmail(...args) },
+    signIn: {
+      social: (...args: unknown[]) => signInSocial(...args),
+    },
     sendVerificationEmail: (...args: unknown[]) =>
       sendVerificationEmail(...args),
   },
@@ -32,6 +36,7 @@ describe("SignupForm", () => {
   beforeEach(() => {
     push.mockReset()
     signUpEmail.mockReset()
+    signInSocial.mockReset()
     sendVerificationEmail.mockReset()
   })
 
@@ -61,6 +66,20 @@ describe("SignupForm", () => {
     )
     expect(signUpEmail).not.toHaveBeenCalled()
     expect(push).not.toHaveBeenCalled()
+  })
+
+  it("signs up with Google via the social button", async () => {
+    const user = userEvent.setup()
+    render(<SignupForm />)
+
+    await user.click(
+      screen.getByRole("button", { name: /continue with google/i })
+    )
+
+    expect(signInSocial).toHaveBeenCalledWith({
+      provider: "google",
+      callbackURL: "/dashboard",
+    })
   })
 
   it("submits signUp.email and shows the check-your-email state", async () => {

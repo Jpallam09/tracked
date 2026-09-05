@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import hero from "../public/heo.jpg"
 import Link from "next/link"
+import { GoogleButton } from "@/components/google-button"
+import { Marker, MarkerContent } from "@/components/ui/marker"
 
 export function SignupForm({
   className,
@@ -120,6 +122,10 @@ export function SignupForm({
                     Enter your details below to create your account
                   </p>
                 </div>
+                <GoogleButton className="w-full" />
+                <Marker variant="separator">
+                  <MarkerContent>or continue with</MarkerContent>
+                </Marker>
                 {error ? (
                   <div
                     role="alert"

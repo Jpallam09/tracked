@@ -18,6 +18,8 @@ import { ForgotPasswordDialog } from "@/components/forgot-password-dialog"
 
 import Image from "next/image"
 import hero from "../public/heo.jpg"
+import { GoogleButton } from "@/components/google-button"
+import { Marker, MarkerContent } from "@/components/ui/marker"
 
 export function LoginForm({
   className,
@@ -82,6 +84,10 @@ export function LoginForm({
                   Login to your Acme Inc account
                 </p>
               </div>
+              <GoogleButton className="w-full" />
+              <Marker variant="separator">
+                <MarkerContent>or continue with</MarkerContent>
+              </Marker>
               {error ? (
                 <div
                   role="alert"
