@@ -2,13 +2,13 @@ import { NextResponse, type NextRequest } from "next/server"
 import { auth } from "@/lib/auth"
 
 const protectedRoutes = ["/dashboard"]
-const publicRoutes = ["/login", "/signup"]
+const publicRoutes = ["/login", "/signup", "/reset-password"]
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   const isProtected = protectedRoutes.some((route) =>
-    pathname.startsWith(route),
+    pathname.startsWith(route)
   )
   const isPublic = publicRoutes.includes(pathname)
 
@@ -30,5 +30,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 }
