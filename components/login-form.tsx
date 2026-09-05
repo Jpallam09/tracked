@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
+import { ForgotPasswordDialog } from "@/components/forgot-password-dialog"
 
 import Image from "next/image"
 import hero from "../public/heo.jpg"
@@ -27,10 +28,13 @@ export function LoginForm({
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [forgotOpen, setForgotOpen] = useState(false)
+  const [showVerification, setShowVerification] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
+    setShowVerification(false)
     setIsLoading(true)
 
     const { error } = await authClient.signIn.email({
@@ -40,11 +44,30 @@ export function LoginForm({
     setIsLoading(false)
 
     if (error) {
+      if (error.status === 403) {
+        setShowVerification(true)
+        setError("Please verify your email address before signing in.")
+        return
+      }
       setError(error.message ?? "Invalid email or password")
       return
     }
 
     router.push("/dashboard")
+  }
+
+  async function handleResendVerification() {
+    setError(null)
+    const { error } = await authClient.sendVerificationEmail({
+      email,
+      callbackURL: "/dashboard",
+    })
+
+    if (error) {
+      setError(error.message ?? "Could not resend verification email")
+    } else {
+      setError("Verification email sent. Check your inbox.")
+    }
   }
 
   return (
@@ -67,6 +90,16 @@ export function LoginForm({
                   {error}
                 </div>
               ) : null}
+              {showVerification ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleResendVerification}
+                >
+                  Resend verification email
+                </Button>
+              ) : null}
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -81,12 +114,19 @@ export function LoginForm({
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <Link
-                    href="#"
-                    className="ml-auto text-sm underline-offset-2 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link>
+                  <ForgotPasswordDialog
+                    open={forgotOpen}
+                    onOpenChange={setForgotOpen}
+                    trigger={
+                      <Button
+                        type="button"
+                        variant="link"
+                        className="ml-auto h-auto p-0 text-sm underline-offset-2 hover:underline"
+                      >
+                        Forgot your password?
+                      </Button>
+                    }
+                  />
                 </div>
                 <Input
                   id="password"
