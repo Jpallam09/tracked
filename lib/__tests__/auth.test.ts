@@ -1,3 +1,5 @@
+// @vitest-environment node
+
 import { describe, expect, it } from "vitest"
 import { getTestInstance } from "better-auth/test"
 import { baseAuthOptions } from "@/lib/base-auth"
@@ -9,15 +11,28 @@ type SignUpInput = {
   lastName: string
 }
 
-async function createInstance() {
-  return getTestInstance(baseAuthOptions, {
-    testUser: {
-      name: "Ada",
-      email: "ada@example.com",
-      password: "test123456",
-      lastName: "Lovelace",
-    } as never,
-  })
+async function createInstance(options: { requireVerification?: boolean } = {}) {
+  const requireVerification = options.requireVerification ?? true
+  return getTestInstance(
+    {
+      ...baseAuthOptions,
+      secret: "test-signing-secret-for-email-verification",
+      baseURL: "http://localhost:3000",
+      emailAndPassword: {
+        ...(baseAuthOptions.emailAndPassword ?? {}),
+        requireEmailVerification: requireVerification,
+      },
+    },
+    {
+      testUser: {
+        name: "Ada",
+        email: "ada@example.com",
+        password: "test123456",
+        lastName: "Lovelace",
+        emailVerified: true,
+      } as never,
+    }
+  )
 }
 
 const graceBody: SignUpInput = {
@@ -40,19 +55,40 @@ describe("auth integration (in-memory better-auth via getTestInstance)", () => {
     expect((data?.user as { lastName?: string }).lastName).toBe("Hopper")
   })
 
-  it("rejects a duplicate email on signup", async () => {
+  it("does not auto sign-in after sign-up when email verification is required", async () => {
     const { client } = await createInstance()
 
-    const first = await client.signUp.email(graceBody)
-    expect(first.error).toBeNull()
+    const { data } = await client.signUp.email(graceBody)
+
+    expect(data?.user).toBeDefined()
+    expect(data?.token).toBeNull()
+  })
+
+  it("does not reveal whether an email is already registered on signup", async () => {
+    const { client } = await createInstance()
 
     const duplicate = await client.signUp.email(graceBody)
-    expect(duplicate.error).not.toBeNull()
-    expect(duplicate.error?.status).toBe(422)
+
+    expect(duplicate.error).toBeNull()
+    expect(duplicate.data?.user).toBeDefined()
+  })
+
+  it("rejects sign-in with an unverified email", async () => {
+    const { client } = await createInstance()
+
+    await client.signUp.email(graceBody)
+
+    const { data, error } = await client.signIn.email({
+      email: "grace@example.com",
+      password: "password123",
+    })
+
+    expect(data).toBeNull()
+    expect(error?.status).toBe(403)
   })
 
   it("signs in with correct credentials and returns a session token", async () => {
-    const { client } = await createInstance()
+    const { client } = await createInstance({ requireVerification: false })
 
     const { data, error } = await client.signIn.email({
       email: "ada@example.com",
@@ -65,7 +101,7 @@ describe("auth integration (in-memory better-auth via getTestInstance)", () => {
   })
 
   it("rejects sign-in with an incorrect password", async () => {
-    const { client } = await createInstance()
+    const { client } = await createInstance({ requireVerification: false })
 
     const { data, error } = await client.signIn.email({
       email: "ada@example.com",
@@ -77,7 +113,9 @@ describe("auth integration (in-memory better-auth via getTestInstance)", () => {
   })
 
   it("gets the session for an authenticated request", async () => {
-    const { auth, signInWithTestUser } = await createInstance()
+    const { auth, signInWithTestUser } = await createInstance({
+      requireVerification: false,
+    })
 
     const { headers } = await signInWithTestUser()
 
@@ -87,7 +125,7 @@ describe("auth integration (in-memory better-auth via getTestInstance)", () => {
   })
 
   it("returns null session without auth headers", async () => {
-    const { auth } = await createInstance()
+    const { auth } = await createInstance({ requireVerification: false })
 
     const session = await auth.api.getSession({ headers: new Headers() })
 
@@ -95,7 +133,9 @@ describe("auth integration (in-memory better-auth via getTestInstance)", () => {
   })
 
   it("signs out and invalidates the session", async () => {
-    const { auth, signInWithTestUser } = await createInstance()
+    const { auth, signInWithTestUser } = await createInstance({
+      requireVerification: false,
+    })
 
     const { headers } = await signInWithTestUser()
 
