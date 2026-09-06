@@ -10,11 +10,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: ReactNode
-}) {
+export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider>
       <SidebarLeft />
@@ -29,7 +25,7 @@ export default function DashboardLayout({
             <DashboardBreadcrumb />
           </div>
         </header>
-        {children}
+        <div className="min-h-0 min-w-0 flex-1 overflow-y-auto">{children}</div>
       </SidebarInset>
       <SidebarRight />
     </SidebarProvider>

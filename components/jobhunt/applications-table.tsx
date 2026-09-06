@@ -54,7 +54,7 @@ export function ApplicationsTable({
   const pageCount = Math.max(1, Math.ceil(totalEstimate / pageSize))
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-3 p-4 lg:p-6">
+    <div className="flex w-full min-w-0 flex-col gap-3 p-4 lg:p-6">
       <div className="flex items-center justify-between gap-2">
         <p className="text-sm text-muted-foreground">
           {totalEstimate} candidate email{totalEstimate === 1 ? "" : "s"} found
@@ -71,14 +71,14 @@ export function ApplicationsTable({
           </p>
         </div>
       ) : (
-        <div className="min-w-0 overflow-x-auto">
-          <Table size="compact" className="w-full">
+        <div className="min-w-0 overflow-hidden">
+          <Table size="compact" className="w-full table-fixed">
             <TableHeader>
               <TableRow>
                 <TableHead className="w-20">Date</TableHead>
-                <TableHead className="w-64">From</TableHead>
+                <TableHead className="w-56">From</TableHead>
                 <TableHead>Subject</TableHead>
-                <TableHead className="text-right">Snippet</TableHead>
+                <TableHead className="w-64 text-right">Snippet</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -91,13 +91,13 @@ export function ApplicationsTable({
                     {email.from}
                   </TableCell>
                   <TableCell
-                    className="max-w-md truncate font-medium"
+                    className="truncate font-medium"
                     title={email.subject}
                   >
                     {email.subject || "(no subject)"}
                   </TableCell>
                   <TableCell
-                    className="max-w-2xl truncate text-right"
+                    className="truncate text-right"
                     title={email.snippet}
                   >
                     {email.snippet}
