@@ -57,7 +57,7 @@ export function SidebarRight({
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton>
+            <SidebarMenuButton disabled>
               <HugeiconsIcon icon={PlusSignIcon} strokeWidth={2} />
               <span>New Calendar</span>
             </SidebarMenuButton>

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { usePathname } from "next/navigation"
 
 import { NavFavorites } from "@/components/nav-favorites"
 import { NavMain } from "@/components/nav-main"
@@ -48,6 +49,7 @@ const data = {
       icon: (
         <HugeiconsIcon icon={SearchIcon} strokeWidth={2} />
       ),
+      disabled: true,
     },
     {
       title: "Ask AI",
@@ -55,14 +57,14 @@ const data = {
       icon: (
         <HugeiconsIcon icon={SparklesIcon} strokeWidth={2} />
       ),
+      disabled: true,
     },
     {
       title: "Home",
-      url: "#",
+      url: "/dashboard",
       icon: (
         <HugeiconsIcon icon={HomeIcon} strokeWidth={2} />
       ),
-      isActive: true,
     },
     {
       title: "Inbox",
@@ -70,7 +72,7 @@ const data = {
       icon: (
         <HugeiconsIcon icon={InboxIcon} strokeWidth={2} />
       ),
-      badge: "10",
+      disabled: true,
     },
     {
       title: "Job Hunt",
@@ -87,6 +89,7 @@ const data = {
       icon: (
         <HugeiconsIcon icon={CalendarIcon} strokeWidth={2} />
       ),
+      disabled: true,
     },
     {
       title: "Settings",
@@ -94,6 +97,7 @@ const data = {
       icon: (
         <HugeiconsIcon icon={Settings05Icon} strokeWidth={2} />
       ),
+      disabled: true,
     },
     {
       title: "Templates",
@@ -101,6 +105,7 @@ const data = {
       icon: (
         <HugeiconsIcon icon={CubeIcon} strokeWidth={2} />
       ),
+      disabled: true,
     },
     {
       title: "Trash",
@@ -108,6 +113,7 @@ const data = {
       icon: (
         <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} />
       ),
+      disabled: true,
     },
     {
       title: "Help",
@@ -115,6 +121,7 @@ const data = {
       icon: (
         <HugeiconsIcon icon={MessageQuestionIcon} strokeWidth={2} />
       ),
+      disabled: true,
     },
   ],
   favorites: [
@@ -281,11 +288,20 @@ const data = {
 export function SidebarLeft({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname()
+
+  const navMain = data.navMain.map((item) => ({
+    ...item,
+    isActive:
+      item.url !== "#" &&
+      (pathname === item.url || pathname.startsWith(`${item.url}/`)),
+  }))
+
   return (
     <Sidebar className="border-r-0" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain} />
       </SidebarHeader>
       <SidebarContent>
         <NavFavorites favorites={data.favorites} />

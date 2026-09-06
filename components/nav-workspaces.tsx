@@ -40,25 +40,26 @@ export function NavWorkspaces({
           {workspaces.map((workspace) => (
             <Collapsible key={workspace.name}>
               <SidebarMenuItem>
-                <SidebarMenuButton render={<a href="#" />}>
+                <SidebarMenuButton render={<a aria-disabled tabIndex={-1} />}>
                   <span>{workspace.emoji}</span>
                   <span>{workspace.name}</span>
                 </SidebarMenuButton>
                 <SidebarMenuAction
+                  disabled
                   render={<CollapsibleTrigger />}
                   className="left-2 bg-sidebar-accent text-sidebar-accent-foreground data-open:rotate-90"
                   showOnHover
                 >
                   <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} />
                 </SidebarMenuAction>
-                <SidebarMenuAction showOnHover>
+                <SidebarMenuAction disabled showOnHover>
                   <HugeiconsIcon icon={PlusSignIcon} strokeWidth={2} />
                 </SidebarMenuAction>
                 <CollapsibleContent>
                   <SidebarMenuSub>
                     {workspace.pages.map((page) => (
                       <SidebarMenuSubItem key={page.name}>
-                        <SidebarMenuSubButton render={<a href="#" />}>
+                        <SidebarMenuSubButton render={<a aria-disabled tabIndex={-1} />}>
                           <span>{page.emoji}</span>
                           <span>{page.name}</span>
                         </SidebarMenuSubButton>
@@ -70,7 +71,7 @@ export function NavWorkspaces({
             </Collapsible>
           ))}
           <SidebarMenuItem>
-            <SidebarMenuButton className="text-sidebar-foreground/70">
+            <SidebarMenuButton disabled className="text-sidebar-foreground/70">
               <HugeiconsIcon icon={MoreHorizontalCircle01Icon} strokeWidth={2} />
               <span>More</span>
             </SidebarMenuButton>

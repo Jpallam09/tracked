@@ -14,6 +14,7 @@ export function NavMain({
     url: string
     icon: React.ReactNode
     isActive?: boolean
+    disabled?: boolean
   }[]
 }) {
   return (
@@ -22,7 +23,13 @@ export function NavMain({
         <SidebarMenuItem key={item.title}>
           <SidebarMenuButton
             isActive={item.isActive}
-            render={<a href={item.url} />}
+            render={
+              <a
+                href={item.disabled ? undefined : item.url}
+                aria-disabled={item.disabled || undefined}
+                tabIndex={item.disabled ? -1 : undefined}
+              />
+            }
           >
             {item.icon}
             <span>{item.title}</span>
