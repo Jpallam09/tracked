@@ -45,6 +45,12 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+    --color-hover: var(--hover);
+    --color-active: var(--active);
+    --color-selected: var(--selected);
+    --color-destructive-light: var(--destructive-light);
+    --color-focus-ring: var(--focus-ring);
+    --overlay: var(--overlay);
 }
 
 :root {
@@ -80,6 +86,12 @@
     --sidebar-accent-foreground: oklch(0.218 0.008 223.9);
     --sidebar-border: oklch(0.925 0.005 214.3);
     --sidebar-ring: oklch(0.723 0.014 214.4);
+    --hover: rgb(0 0 0 / 0.04);
+    --active: rgb(0 0 0 / 0.07);
+    --selected: #D4D4D4;
+    --destructive-light: #FEF2F2;
+    --overlay: 0 0 0;
+    --focus-ring: #6B97FF;
 }
 
 .dark {
@@ -114,6 +126,11 @@
     --sidebar-accent-foreground: oklch(0.987 0.002 197.1);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.56 0.021 213.5);
+    --hover: rgb(255 255 255 / 0.06);
+    --active: rgb(255 255 255 / 0.1);
+    --selected: #525252;
+    --destructive-light: #450A0A;
+    --overlay: 255 255 255;
 }
 
 @layer base {
@@ -125,5 +142,13 @@
     }
   html {
     @apply font-sans;
+    }
+  :focus-visible {
+    outline: 1px solid var(--focus-ring, #6B97FF);
+    outline-offset: 2px;
+    border-radius: var(--shape-input-radius, 8px);
+    }
+  a:focus-visible {
+    border-radius: 2px;
     }
 }
