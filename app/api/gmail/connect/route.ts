@@ -4,7 +4,7 @@ import { headers } from "next/headers"
 import { NextResponse } from "next/server"
 
 import { auth } from "@/lib/auth"
-import { buildAuthUrl } from "@/lib/gmail/oauth"
+import { buildAuthUrl } from "@/lib/jobhunt/gmail/oauth"
 
 export const dynamic = "force-dynamic"
 

@@ -8,7 +8,7 @@ import {
   GoogleAuthError,
   exchangeCode,
   fetchGmailAddress,
-} from "@/lib/gmail/oauth"
+} from "@/lib/jobhunt/gmail/oauth"
 
 export const dynamic = "force-dynamic"
 
