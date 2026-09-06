@@ -14,7 +14,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { CommandIcon, AudioWave01Icon, SearchIcon, SparklesIcon, HomeIcon, InboxIcon, CalendarIcon, Settings05Icon, CubeIcon, Delete02Icon, MessageQuestionIcon } from "@hugeicons/core-free-icons"
+import { CommandIcon, AudioWave01Icon, SearchIcon, SparklesIcon, HomeIcon, InboxIcon, CalendarIcon, Settings05Icon, CubeIcon, Delete02Icon, MessageQuestionIcon, BriefcaseIcon } from "@hugeicons/core-free-icons"
 
 // This is sample data.
 const data = {
@@ -71,6 +71,13 @@ const data = {
         <HugeiconsIcon icon={InboxIcon} strokeWidth={2} />
       ),
       badge: "10",
+    },
+    {
+      title: "Job Hunt",
+      url: "/applications",
+      icon: (
+        <HugeiconsIcon icon={BriefcaseIcon} strokeWidth={2} />
+      ),
     },
   ],
   navSecondary: [

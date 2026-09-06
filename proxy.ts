@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 import { auth } from "@/lib/auth"
 
-const protectedRoutes = ["/dashboard"]
+const protectedRoutes = ["/dashboard", "/applications"]
 const publicRoutes = ["/login", "/signup", "/reset-password"]
 
 export async function proxy(request: NextRequest) {
