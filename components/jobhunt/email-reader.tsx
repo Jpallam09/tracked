@@ -14,7 +14,9 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer"
+import { LinkPreview } from "@/components/jobhunt/link-preview"
 import type { CandidateEmail, ReadEmail } from "@/lib/jobhunt/types"
+import { splitTextAndLinks } from "@/lib/jobhunt/links"
 
 type FetchState =
   | { status: "idle" }
@@ -161,9 +163,7 @@ export function EmailReader({
 
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-3">
           {state.status === "success" && isCurrent ? (
-            <p className="text-sm leading-relaxed whitespace-pre-wrap text-foreground">
-              {state.email.body}
-            </p>
+            <EmailBody body={state.email.body} />
           ) : state.status === "error" && isCurrent ? (
             <div className="flex flex-col items-center justify-center gap-3 py-10 text-center">
               <p className="text-sm font-medium text-foreground">
@@ -198,5 +198,26 @@ export function EmailReader({
         </div>
       </DrawerContent>
     </Drawer>
+  )
+}
+
+function EmailBody({ body }: { body: string }) {
+  const segments = React.useMemo(() => splitTextAndLinks(body), [body])
+
+  return (
+    <div className="flex flex-col gap-3">
+      {segments.map((segment, index) =>
+        segment.type === "text" ? (
+          <p
+            key={index}
+            className="text-sm leading-relaxed break-words whitespace-pre-wrap text-foreground"
+          >
+            {segment.value}
+          </p>
+        ) : (
+          <LinkPreview key={`${segment.value}-${index}`} url={segment.value} />
+        )
+      )}
+    </div>
   )
 }
