@@ -1,11 +1,8 @@
+import type { ReactNode } from "react"
+
 import { SidebarLeft } from "@/components/sidebar-left"
 import { SidebarRight } from "@/components/sidebar-right"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb"
+import { DashboardBreadcrumb } from "@/components/dashboard-breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,
@@ -13,7 +10,11 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-export default function Page() {
+export default function DashboardLayout({
+  children,
+}: {
+  children: ReactNode
+}) {
   return (
     <SidebarProvider>
       <SidebarLeft />
@@ -25,21 +26,10 @@ export default function Page() {
               orientation="vertical"
               className="mr-2 data-[orientation=vertical]:h-4"
             />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbPage className="line-clamp-1">
-                    Project Management & Task Tracking
-                  </BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+            <DashboardBreadcrumb />
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">
-          <div className="mx-auto h-24 w-full max-w-3xl rounded-xl bg-muted/50" />
-          <div className="mx-auto h-[100vh] w-full max-w-3xl rounded-xl bg-muted/50" />
-        </div>
+        {children}
       </SidebarInset>
       <SidebarRight />
     </SidebarProvider>
