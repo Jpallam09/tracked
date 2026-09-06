@@ -1,6 +1,11 @@
+"use client"
+
+import * as React from "react"
 import { format } from "date-fns"
 
+import { EmailReader } from "@/components/jobhunt/email-reader"
 import { RefreshButton } from "@/components/jobhunt/refresh-button"
+import { cn } from "@/lib/utils"
 import {
   Pagination,
   PaginationContent,
@@ -52,6 +57,13 @@ export function ApplicationsTable({
   totalEstimate,
 }: DiscoveryResult) {
   const pageCount = Math.max(1, Math.ceil(totalEstimate / pageSize))
+  const [selectedId, setSelectedId] = React.useState<string | null>(null)
+
+  const selected = candidates.find((email) => email.id === selectedId) ?? null
+
+  const toggleRead = React.useCallback((id: string) => {
+    setSelectedId((current) => (current === id ? null : id))
+  }, [])
 
   return (
     <div className="flex w-full min-w-0 flex-col gap-3 p-4 lg:p-6">
@@ -83,7 +95,24 @@ export function ApplicationsTable({
             </TableHeader>
             <TableBody>
               {candidates.map((email, index) => (
-                <TableRow key={email.id} index={index}>
+                <TableRow
+                  key={email.id}
+                  index={index}
+                  tabIndex={0}
+                  role="link"
+                  aria-label={`Open email from ${email.from}`}
+                  className={cn(
+                    "cursor-pointer select-none",
+                    selectedId === email.id && "bg-accent/60"
+                  )}
+                  onClick={() => toggleRead(email.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault()
+                      toggleRead(email.id)
+                    }
+                  }}
+                >
                   <TableCell className="text-xs whitespace-nowrap">
                     {formatDate(email.date)}
                   </TableCell>
@@ -146,6 +175,8 @@ export function ApplicationsTable({
           </PaginationContent>
         </Pagination>
       ) : null}
+
+      <EmailReader email={selected} onClose={() => setSelectedId(null)} />
     </div>
   )
 }
