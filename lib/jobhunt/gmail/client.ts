@@ -25,6 +25,30 @@ export interface GmailMetadataMessage extends GmailMessageSummary {
   }
 }
 
+export interface GmailPart {
+  mimeType?: string
+  filename?: string
+  headers?: Array<{ name?: string; value?: string }>
+  body?: {
+    data?: string
+    size?: number
+  }
+  parts?: GmailPart[]
+}
+
+export interface GmailFullMessage extends GmailMessageSummary {
+  internalDate?: string
+  payload?: {
+    mimeType?: string
+    headers?: Array<{ name?: string; value?: string }>
+    body?: {
+      data?: string
+      size?: number
+    }
+    parts?: GmailPart[]
+  }
+}
+
 interface GmailErrorBody {
   error?: {
     message?: string
@@ -119,6 +143,16 @@ async function mapWithConcurrency<T, R>(
     Array.from({ length: Math.min(limit, items.length) }, () => worker())
   )
   return results
+}
+
+export async function getMessage(
+  accessToken: string,
+  id: string
+): Promise<GmailFullMessage> {
+  return requestJson<GmailFullMessage>(
+    `/users/me/messages/${encodeURIComponent(id)}?format=full`,
+    accessToken
+  )
 }
 
 export async function batchGetMessages(

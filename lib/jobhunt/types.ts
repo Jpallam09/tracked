@@ -7,3 +7,5 @@ export interface CandidateEmail {
   subject: string
   snippet: string
 }
+
+export type ReadEmail = CandidateEmail & { body: string }
