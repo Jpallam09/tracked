@@ -23,7 +23,7 @@ Tracked is a job application tracker built with Next.js that imports your Gmail 
 
 ```bash
 # 1. Clone the repository
-#    (add your clone URL here)
+git clone git@github.com:Jpallam09/tracked.git
 
 # 2. Install dependencies
 pnpm install
