@@ -1,7 +1,7 @@
 "use client"
 
 import { useSearchParams } from "next/navigation"
-import { ForgotPasswordDialog } from "@/components/forgot-password-dialog"
+import { ForgotPasswordDialog } from "@/components/auth/forgot-password-dialog"
 
 export function ResetPasswordContent() {
   const searchParams = useSearchParams()

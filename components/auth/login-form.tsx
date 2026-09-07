@@ -14,11 +14,11 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import { ForgotPasswordDialog } from "@/components/forgot-password-dialog"
+import { ForgotPasswordDialog } from "@/components/auth/forgot-password-dialog"
 
 import Image from "next/image"
-import hero from "../public/heo.jpg"
-import { GoogleButton } from "@/components/google-button"
+import hero from "../../public/heo.jpg"
+import { GoogleButton } from "@/components/auth/google-button"
 import { Marker, MarkerContent } from "@/components/ui/marker"
 
 export function LoginForm({

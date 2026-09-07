@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { SignupForm } from "@/components/signup-form"
+import { SignupForm } from "@/components/auth/signup-form"
 
 const push = vi.fn()
 const signUpEmail = vi.fn()
