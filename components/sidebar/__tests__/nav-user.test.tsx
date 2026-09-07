@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import type { ReactElement } from "react"
-import { NavUser } from "@/components/nav-user"
+import { NavUser } from "@/components/sidebar/nav-user"
 import { SidebarProvider } from "@/components/ui/sidebar"
 
 const push = vi.fn()

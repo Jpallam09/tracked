@@ -1,8 +1,8 @@
 import type { ReactNode } from "react"
 
-import { SidebarLeft } from "@/components/sidebar-left"
-import { SidebarRight } from "@/components/sidebar-right"
-import { DashboardBreadcrumb } from "@/components/dashboard-breadcrumb"
+import { SidebarLeft } from "@/components/sidebar/sidebar-left"
+import { SidebarRight } from "@/components/sidebar/sidebar-right"
+import { DashboardBreadcrumb } from "@/components/sidebar/dashboard-breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,

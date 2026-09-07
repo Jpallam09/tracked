@@ -2,9 +2,9 @@
 
 import * as React from "react"
 
-import { Calendars } from "@/components/calendars"
-import { DatePicker } from "@/components/date-picker"
-import { NavUser } from "@/components/nav-user"
+import { Calendars } from "@/components/sidebar/calendars"
+import { DatePicker } from "@/components/sidebar/date-picker"
+import { NavUser } from "@/components/sidebar/nav-user"
 import {
   Sidebar,
   SidebarContent,

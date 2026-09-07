@@ -3,11 +3,11 @@
 import * as React from "react"
 import { usePathname } from "next/navigation"
 
-import { NavFavorites } from "@/components/nav-favorites"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavWorkspaces } from "@/components/nav-workspaces"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { NavFavorites } from "@/components/sidebar/nav-favorites"
+import { NavMain } from "@/components/sidebar/nav-main"
+import { NavSecondary } from "@/components/sidebar/nav-secondary"
+import { NavWorkspaces } from "@/components/sidebar/nav-workspaces"
+import { TeamSwitcher } from "@/components/sidebar/team-switcher"
 import {
   Sidebar,
   SidebarContent,
