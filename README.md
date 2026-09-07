@@ -80,3 +80,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `pnpm db:push` | Push schema directly to Neon |
 | `pnpm db:migrate` | Apply migrations |
 | `pnpm db:studio` | Open Drizzle Studio |
+
+## License
+
+[MIT](LICENSE)
